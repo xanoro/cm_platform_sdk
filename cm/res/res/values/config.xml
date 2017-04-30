@@ -54,8 +54,8 @@
 
     <!-- Default values for LiveDisplay -->
     <integer name="config_dayColorTemperature">6500</integer>
-    <integer name="config_nightColorTemperature">4800</integer>
-    <integer name="config_outdoorAmbientLux">12000</integer>
+    <integer name="config_nightColorTemperature">3000</integer>
+    <integer name="config_outdoorAmbientLux">11000</integer>
     <integer name="config_outdoorAmbientLuxHysteresis">1500</integer>
     <integer name="config_defaultLiveDisplayMode">2</integer>
 
