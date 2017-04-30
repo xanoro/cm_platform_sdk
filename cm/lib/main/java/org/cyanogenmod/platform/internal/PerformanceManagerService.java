@@ -56,6 +56,7 @@ import cyanogenmod.power.PerformanceProfile;
 import static cyanogenmod.power.PerformanceManager.PROFILE_BALANCED;
 import static cyanogenmod.power.PerformanceManager.PROFILE_HIGH_PERFORMANCE;
 import static cyanogenmod.power.PerformanceManager.PROFILE_POWER_SAVE;
+import static cyanogenmod.power.PerformanceManager.PROFILE_BIAS_POWER_SAVE;
 import static cyanogenmod.providers.CMSettings.Secure.APP_PERFORMANCE_PROFILES_ENABLED;
 import static cyanogenmod.providers.CMSettings.Secure.PERFORMANCE_PROFILE;
 import static cyanogenmod.providers.CMSettings.Secure.getInt;
@@ -97,6 +98,7 @@ public class PerformanceManagerService extends CMSystemService {
 
     // Standard weights
     private static final float WEIGHT_POWER_SAVE       = 0.0f;
+    private static final float WEIGHT_BIAS_POWER_SAVE  = 0.4f;
     private static final float WEIGHT_BALANCED         = 0.5f;
     private static final float WEIGHT_HIGH_PERFORMANCE = 1.0f;
 
@@ -106,7 +108,7 @@ public class PerformanceManagerService extends CMSystemService {
     // Manipulate state variables under lock
     private boolean mLowPowerModeEnabled = false;
     private boolean mSystemReady         = false;
-    private boolean mBoostEnabled        = true;
+    private boolean mBoostEnabled        = false;
     private int     mUserProfile         = -1;
     private int     mActiveProfile       = -1;
     private String  mCurrentActivityName = null;
@@ -175,8 +177,8 @@ public class PerformanceManagerService extends CMSystemService {
 
         @Override
         public void onChange(boolean selfChange) {
-            int profile = getInt(mCR, PERFORMANCE_PROFILE, PROFILE_BALANCED);
-            boolean boost = getInt(mCR, APP_PERFORMANCE_PROFILES_ENABLED, 1) == 1;
+            int profile = getInt(mCR, PERFORMANCE_PROFILE, PROFILE_BIAS_POWER_SAVE);
+            boolean boost = getInt(mCR, APP_PERFORMANCE_PROFILES_ENABLED, 0) == 1;
 
             synchronized (mLock) {
                 if (hasProfiles() && mProfiles.containsKey(profile)) {
